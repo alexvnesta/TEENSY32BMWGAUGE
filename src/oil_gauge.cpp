@@ -52,7 +52,7 @@ void drawOilGauge(void) {
       // LOW
       if (flashTracker) strcpy(indicator, "LOW");
       else strcpy(indicator, "");
-    } else if (oilPressure < 2500) {
+    } else if (oilPressure < 2800) {
       // IDLE
       strcpy(indicator, "IDLE");
     } else {

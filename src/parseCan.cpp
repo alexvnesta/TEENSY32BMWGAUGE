@@ -19,10 +19,10 @@ static uint32_t COOLANT_ID = 464; //1D0
 static uint32_t DASHLIGHT_ID = 514; //202
 
 volatile float voltage = 0;
-volatile float speed = 0;
+volatile int speed = 0;
 volatile float torquenm = 0;
 volatile float torquelbf = 0;
-volatile float rpm = 0; 
+volatile int rpm = 0; 
 volatile float coolantC = 0;
 volatile float coolantF = 0;
 volatile int dimmer = 0; 
@@ -42,7 +42,7 @@ SnoozeBlock config_teensy32(digital);
 
 bool sleepflag = 0;
 void checkSnooze(void){
-  pinMode(21, INPUT);
+  pinMode(21, INPUT_PULLDOWN);
 
   Serial.print("Checking PIN21 state: ");
 
@@ -65,7 +65,7 @@ void checkSnooze(void){
     snoozeTime = millis();
     // only reinitialize after sleep.
     if (sleepflag == 1){
-          initCanT4();
+          //initCanT4();
           u8g2.setPowerSave(0);
           sleepflag = 0;
     }

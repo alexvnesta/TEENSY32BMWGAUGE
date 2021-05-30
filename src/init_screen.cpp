@@ -7,6 +7,7 @@
 #include "multi_gauge.h"
 #include "cartesian_graph.h"
 #include "zero_sixty.h"
+#include "logo_gauge.h"
 
 int number_of_screens = 6;
 
@@ -119,7 +120,7 @@ void switchScreens(int current_screen){
   }
   else if (current_screen == 3){
     Serial.println("Current Screen Selection is 3");
-    drawMultiGauge();
+    drawLogoGauge();
   }
   else if (current_screen == 4){
     Serial.println("Current Screen Selection is 4");
