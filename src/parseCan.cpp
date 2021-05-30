@@ -66,7 +66,8 @@ void checkSnooze(void){
     // only reinitialize after sleep.
     if (sleepflag == 1){
           //initCanT4();
-          u8g2.setPowerSave(0);
+          setup();
+          //u8g2.setPowerSave(0);
           sleepflag = 0;
     }
 

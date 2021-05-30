@@ -38,14 +38,14 @@ void setup() {
   delay(1000); // Sleep for 3 seconds to give boot illusion
   
   setupInitScreen = true;
-/*
+
   oilPressScreenTimer = millis();
 
-  while(millis() - oilPressScreenTimer < 10000){
+  while(millis() - oilPressScreenTimer < 30000){
       Serial.println("Startup Oil Pressure!!");
       switchScreens(2);
   }
-*/
+
 }
 
 // the loop function runs over and over again forever
