@@ -57,8 +57,8 @@ void checkSnooze(void){
       if (millis() - snoozeTime > 2000) {
         Serial.println("GOING TO SLEEP NOW!!");
         sleepflag = 1;
-        u8g2.setPowerSave(1);
-        Snooze.hibernate( config_teensy32 ); 
+        //u8g2.setPowerSave(1);
+        //Snooze.deepSleep( config_teensy32 ); 
       }
   }
   else if(snoozePin == HIGH) {

@@ -41,10 +41,10 @@ void setup() {
 
   oilPressScreenTimer = millis();
 
-  while(millis() - oilPressScreenTimer < 30000){
-      Serial.println("Startup Oil Pressure!!");
-      switchScreens(2);
-  }
+  //while(millis() - oilPressScreenTimer < 30000){
+  //    Serial.println("Startup Oil Pressure!!");
+  //    switchScreens(2);
+  //}
 
 }
 
@@ -54,7 +54,6 @@ void loop() {
   switchScreens(global_screen_value);
   can1.events(); //Need to check can events in buffer.
   readCanMessages();
-
   checkSnooze();
   //Serial.println("FINISHEDMAINLOOP!!!");
 }
