@@ -8,6 +8,8 @@
 #include "cartesian_graph.h"
 #include "zero_sixty.h"
 #include "logo_gauge.h"
+#include "realHP.h"
+#include "boot_animation.h"
 
 int number_of_screens = 6;
 
@@ -66,6 +68,8 @@ static const unsigned char bmwLogo_bits[] PROGMEM = {
    0x00, 0x00, 0x0c, 0xfe, 0x7f, 0x30, 0x00, 0x00, 0x00, 0x00, 0x70, 0x00,
    0x00, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x80, 0x03, 0xc0, 0x01, 0x00, 0x00,
    0x00, 0x00, 0x00, 0xfc, 0x3f, 0x00, 0x00, 0x00 };
+
+
   if (setupInitScreen == true){
   drawDisplayOn();
   u8g2.firstPage();
@@ -108,7 +112,7 @@ void switchScreens(int current_screen){
 
   if (current_screen == 0){
     Serial.println("Current Screen Selection is 0");
-    drawBootLogo();
+    draw_boot_logo();
   }
   else if (current_screen == 1){
     Serial.println("Current Screen Selection is 1");
@@ -124,8 +128,9 @@ void switchScreens(int current_screen){
   }
   else if (current_screen == 4){
     Serial.println("Current Screen Selection is 4");
-    drawGraph();
-  }
+    drawHPGauge();
+
+    }
   else if (current_screen == 5){
     Serial.println("Current Screen Selection is 5");
     drawZeroSixty();

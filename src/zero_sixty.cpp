@@ -9,11 +9,13 @@ U8X8_SSD1306_128X64_NONAME_4W_SW_SPI u8x8(  /* clock/D0=*/ 13,
                                             /* data/D1=*/ 14, 
                                             /* cs=*/ 17, 
                                             /* dc=*/ 16, 
-                                            /* reset=*/ 15);                                  
+                                            /* reset=*/ 15);        
+
+volatile int speed = 0;                          
 
 volatile int lastSpeed = -1;
 volatile uint32_t lastSpeedTime = 0;
-volatile uint32_t distance = 0;
+volatile unsigned long distance = 0;
 volatile uint32_t startTime = 0;
 volatile uint32_t dataTime = 0;
  
@@ -29,10 +31,12 @@ uint32_t reset_delay = 0;
 
 byte stage = STAGE_IDLE;
  
-#define SPEED_THRESHOLD_1 60 /* mph */
-#define SPEED_THRESHOLD_2 100 /* mph */
-#define SPEED_THRESHOLD_3 120 /* mph */
+#define SPEED_THRESHOLD_1 20 /* mph */
+#define SPEED_THRESHOLD_2 60 /* mph */
+#define SPEED_THRESHOLD_3 100 /* mph */
 #define DISTANCE_THRESHOLD 1320 /* feet */
+
+unsigned long calc_dist = 0;
  
 int times[4] = {0};
  
@@ -67,6 +71,8 @@ void drawZeroSixty(){
 }
 
 void timerLoop(){
+    speed = canSpeed; // Get current speed from can messages
+
     unsigned long elapsed = millis() - startTime;
     dataTime = millis();
     u8x8.setFont(FONT_SIZE_XLARGE);
@@ -82,10 +88,9 @@ void timerLoop(){
 
     // estimate distance
     //distance is speed X time
-    // first we get distance in miles. Then we convert to feet.
-    unsigned long calc_dist = ((speed) * (elapsed/1000))*5280;
+    // first we get distance in miles. then divide by number of seconds in an hour. Then we convert to feet.
+    calc_dist = (int)((((speed) * ((elapsed/1000)/3600)))*5280);
     distance += calc_dist;
-
 
     Serial.print("Distance: ");
     Serial.println(distance);
@@ -95,7 +100,9 @@ void timerLoop(){
     if (lastSpeed != speed) {
         u8x8.setCursor(0,3);
         //make sure we don't overflow the draw buffer
-        u8x8.print(speed);
+        if (speed > 9) u8x8.print(speed);
+        if (speed <= 9) u8x8.print(speed/10);
+
         lastSpeed = speed;
         u8x8.setFont(FONT_SIZE_SMALL);
         u8x8.setCursor(2, 6);
@@ -107,7 +114,7 @@ void timerLoop(){
     if (stage == STAGE_WAIT_START) {
         if (speed == 0) {
             stage = STAGE_MEASURING;
-            startTime = lastSpeedTime;
+            startTime = millis();
             lastSpeed = 0;
             distance = 0;
             memset(times, 0, sizeof(times));
@@ -121,8 +128,7 @@ void timerLoop(){
         }
         if (times[2] == 0 && speed >= SPEED_THRESHOLD_3) {
             times[2] = (int)(elapsed / 100);
-            //stage = STAGE_IDLE;
-            //u8x8.clear();
+            stage = STAGE_IDLE;
             showTimerResults();
         } 
         else if (times[1] == 0 && speed >= SPEED_THRESHOLD_2) {
@@ -135,9 +141,9 @@ void timerLoop(){
         } 
         else if (speed == 0) {
             // speed go back to 0
-            stage = STAGE_IDLE;
+            stage = STAGE_WAIT_START;
         }
-        if (distance > 0 && stage == STAGE_MEASURING) {
+        if (distance > 10 && stage == STAGE_MEASURING) {
 
             if (distance >= DISTANCE_THRESHOLD) {
                 u8x8.setFont(FONT_SIZE_MEDIUM);
@@ -168,9 +174,9 @@ void timerLoop(){
 void showTimerResults(){
     Serial.println("Showing Timer Results!");
     u8x8.setFont(FONT_SIZE_SMALL);
-    u8x8.drawString(5.5,0," 0~60 :");
-    u8x8.drawString(5.5,2," 0~100:");
-    u8x8.drawString(5.5,4," 0~120:");
+    u8x8.drawString(5.5,0," 0~20 :");
+    u8x8.drawString(5.5,2," 0~60:");
+    u8x8.drawString(5.5,4," 0~100:");
     u8x8.drawString(5.5,6," 1/4mi:");
     u8x8.setFont(FONT_SIZE_MEDIUM);
 
@@ -223,4 +229,4 @@ void drawTime(){
     u8x8.setFont(FONT_SIZE_MEDIUM);
     u8x8.setCursor(0,0);
     u8x8.print(buf);
-}
+} 

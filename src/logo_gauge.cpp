@@ -66,6 +66,32 @@ unsigned long multigaugeStartMillisLogo = 0;
 float boostValueLogo = 0;
 float oilValueLogo = 0;
 
+void eliminateLeadingZeroBoost(float bValLogo){
+
+   char numBuf[12];
+   int modifiedNumber = 0;
+
+
+   if (bValLogo > 1){
+      u8g2.print((int)bValLogo);
+   }
+   if (bValLogo < -1){
+      u8g2.print((int)bValLogo);
+   }
+   if (bValLogo < 1 && bValLogo > 0){
+      modifiedNumber = bValLogo*10;
+      snprintf(numBuf, 12, ".%d", modifiedNumber);
+      u8g2.print(numBuf);
+   }
+   if (bValLogo < 0 && bValLogo > -1){
+      modifiedNumber = abs(bValLogo*10);
+      snprintf(numBuf, 12, "-.%d", modifiedNumber);
+      u8g2.print(numBuf);
+   }
+
+}
+
+
 void drawLogoGauge(void){
     if (setupInitScreen == true){
     initScreen();
@@ -91,7 +117,7 @@ void drawLogoGauge(void){
       u8g2.setFont(u8g2_font_logisoso16_tn);
       u8g2.drawXBMP(0, 0, boost_bmp_width, boost_bmp_height, boost_bmp_bits);
       u8g2.setCursor(32,24);
-      u8g2.print((int)boostValueLogo);
+      eliminateLeadingZeroBoost(boostValueLogo);
 
       u8g2.drawXBMP(60, 0, torque_bmp_witch, torque_bmp_height, torque_bmp);
       u8g2.setCursor(94,24);

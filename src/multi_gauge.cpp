@@ -34,13 +34,13 @@ void drawMultiGauge(void){
       u8g2.setFont(u8g2_font_amstrad_cpc_extended_8f);
       u8g2.drawStr(0,12,"Boost:");
       u8g2.setCursor(80,12);
-      u8g2.print(boostValue);
+      u8g2.print(boostValue, 1);
       //u8g2.drawStr(0,12,"TORQ:");
       //u8g2.setCursor(80,12);
       //u8g2.print(torquelbf);
       u8g2.drawStr(0,25,"OilP:");
       u8g2.setCursor(80,25);
-      u8g2.print(oilValue);
+      u8g2.print(oilValue, 1);
       //u8g2.drawStr(0,25,"SPED:");
       //u8g2.setCursor(80,25);
       //u8g2.print(speed);

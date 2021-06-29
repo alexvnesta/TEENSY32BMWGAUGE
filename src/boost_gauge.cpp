@@ -93,7 +93,7 @@ float normaliseSensorData(int boostnumberraw) {
 
   //return ((boostnumberraw - 102) / 0.1356);
   //return ((boostnumberraw - 150) / ((1600 - 150) / (6000)));
-  return ((boostnumberraw - 153) / .241);
+  return ((boostnumberraw - 160) / .241);
 }
 
 

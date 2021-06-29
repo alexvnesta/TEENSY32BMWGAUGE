@@ -19,7 +19,7 @@ static uint32_t COOLANT_ID = 464; //1D0
 static uint32_t DASHLIGHT_ID = 514; //202
 
 volatile float voltage = 0;
-volatile int speed = 0;
+volatile int canSpeed = 0;
 volatile float torquenm = 0;
 volatile float torquelbf = 0;
 volatile int rpm = 0; 
@@ -56,9 +56,10 @@ void checkSnooze(void){
 
       if (millis() - snoozeTime > 2000) {
         Serial.println("GOING TO SLEEP NOW!!");
+        global_screen_value = 2;
         sleepflag = 1;
-        //u8g2.setPowerSave(1);
-        //Snooze.deepSleep( config_teensy32 ); 
+        u8g2.setPowerSave(1);
+        Snooze.deepSleep( config_teensy32 ); 
       }
   }
   else if(snoozePin == HIGH) {
@@ -87,7 +88,7 @@ void parseCanMessage(uint32_t id, const uint8_t message[], uint8_t messageLength
           numClicks = checkNumClicks();
           setupInitScreen = true;
 
-            
+            /*
             if(numClicks == 2 && global_screen_value == 4){
               //Double click event and on virtual dyno page
               Serial.println("RESET VIRTUAL DYNO!");
@@ -100,7 +101,8 @@ void parseCanMessage(uint32_t id, const uint8_t message[], uint8_t messageLength
               setupZeroSixty();
 
             }
-            else if(numClicks == 2){
+            */
+            if(numClicks == 2){
               Serial.println("DOUBLE ClICK!");
             }
             else if(numClicks == 1){
@@ -121,9 +123,9 @@ void parseCanMessage(uint32_t id, const uint8_t message[], uint8_t messageLength
     Serial.println(voltage);
   }
   else if (id == SPEED_ID){
-    speed = (((message[1]-208)*256)+message[0])/16;
+    canSpeed = (((message[1]-208)*256)+message[0])/16;
     Serial.print("Speed: ");
-    Serial.println(speed);
+    Serial.println(canSpeed);
   }
   else if (id == TORQUE_ID){
     torquenm = ((message[2]*256)+message[1]) / 32;
@@ -177,7 +179,7 @@ void parseCanMessage(uint32_t id, const uint8_t message[], uint8_t messageLength
 }
 
 int checkNumClicks(void){
-    static unsigned long max_delay = 1000;
+    static unsigned long max_delay = 800;
     int returnVal = 0;
     Serial.print("before Adding to Counter");
     Serial.println(clickCounter);
