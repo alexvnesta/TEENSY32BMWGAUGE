@@ -8,3 +8,13 @@ It has the following features:
 - 0-60 and 1/4 mile timer
 - live Torque & HP vs RPM
 - Diagnostic readout - battery voltage, coolant temp, etc.
+
+Here is the screen in action
+![](images/demoimage.png?raw=true)
+
+TO DO:
+Add accelerometer for G-force   
+Fix 0-60 gauge  
+sleep with can-sleep message  
+make custom PCB  
+Improve accuracy of 5v sensors  
