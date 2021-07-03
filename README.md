@@ -12,6 +12,11 @@ It has the following features:
 Here is the screen in action
 ![](images/demoimage.png?raw=true)
 
+https://www.youtube.com/watch?v=t63s9R0dFLw
+
+
+
+
 TO DO:
 Add accelerometer for G-force   
 Fix 0-60 gauge  
